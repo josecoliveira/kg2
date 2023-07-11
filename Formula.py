@@ -1,47 +1,47 @@
 class Formula:
-    def __init__(self, formula):
+    def __init__(self, formula: str) -> None:
         self.formula = formula
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"<{self.formula}>"
 
-    def __and__(self, other):
+    def __and__(self, other: 'Formula') -> 'Formula':
         if isinstance(other, Formula):
             return Formula(f"({self.formula} /\ {other.formula})")
         else:
             raise TypeError("Unsupported operand type for &")
 
-    def __or__(self, other):
+    def __or__(self, other: 'Formula') -> 'Formula':
         if isinstance(other, Formula):
             return Formula(f"({self.formula} \/ {other.formula})")
         else:
             raise TypeError("Unsupported operand type for |")
 
-    def __rshift__(self, other):
+    def __rshift__(self, other: 'Formula') -> 'Formula':
         if isinstance(other, Formula):
             return Formula(f"({self.formula} -> {other.formula})")
         else:
             raise TypeError("Unsupported operand type for ->")
 
-    def __gt__(self, other):
+    def __gt__(self, other: 'Formula') -> 'Formula':
         if isinstance(other, Formula):
             return Formula(f"({self.formula} >- {other.formula})")
         else:
             raise TypeError("Unsupported operand type for >-")
 
-    def __invert__(self):
+    def __invert__(self) -> 'Formula':
         return Formula(f"~{self.formula}")
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if isinstance(other, Formula):
             return self.formula == other.formula
         else:
             return False
 
-    def evaluate(self, fuzzy_frame, agent):
+    def evaluate(self, fuzzy_frame: dict, agent: str) -> float:
         return self._evaluate_formula(self.formula, fuzzy_frame, agent)
 
-    def _evaluate_formula(self, formula, fuzzy_frame, agent):
+    def _evaluate_formula(self, formula: str, fuzzy_frame: dict, agent: str) -> float:
         if formula[0] == "~":
             return not self._evaluate_formula(formula[1:], fuzzy_frame, agent)
         elif formula[0] == "(" and formula[-1] == ")":
@@ -53,7 +53,7 @@ class Formula:
         else:
             return fuzzy_frame.get(formula, {}).get(agent, 0.0)
 
-    def _evaluate_complex_formula(self, formula, fuzzy_frame, agent):
+    def _evaluate_complex_formula(self, formula: str, fuzzy_frame: dict, agent: str) -> float:
         parts = formula.split()
         operator = parts[1]
         left_operand = self._evaluate_formula(parts[0], fuzzy_frame, agent)
@@ -76,7 +76,7 @@ class Formula:
         else:
             raise ValueError("Invalid operator")
 
-    def _evaluate_diamond_formula(self, formula, fuzzy_frame, agent):
+    def _evaluate_diamond_formula(self, formula: str, fuzzy_frame: dict, agent: str) -> float:
         sub_formula = formula.strip()
         trust_values = fuzzy_frame.get("relation", {}).get(agent, {})
         return max(
@@ -87,7 +87,7 @@ class Formula:
             for other_agent in trust_values
         )
 
-    def _evaluate_box_formula(self, formula, fuzzy_frame, agent):
+    def _evaluate_box_formula(self, formula: str, fuzzy_frame: dict, agent: str) -> float:
         sub_formula = formula.strip()
         trust_values = fuzzy_frame.get("relation", {}).get(agent, {})
         return min(
@@ -97,9 +97,6 @@ class Formula:
             else self._evaluate_formula(sub_formula, fuzzy_frame, other_agent)
             for other_agent in trust_values
         )
-
-
-
 
 
 # Example usage
