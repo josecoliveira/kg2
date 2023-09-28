@@ -54,6 +54,7 @@ class Formula:
             return fuzzy_frame.get(formula, {}).get(agent, 0.0)
 
     def _evaluate_complex_formula(self, formula: str, fuzzy_frame: dict, agent: str) -> float:
+        # TODO Fix this split
         parts = formula.split()
         operator = parts[1]
         left_operand = self._evaluate_formula(parts[0], fuzzy_frame, agent)
