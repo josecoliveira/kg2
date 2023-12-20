@@ -113,6 +113,14 @@ class Model:
 
 
 class Expression:
+    @staticmethod
+    def __implication(a: int, b: int) -> int:
+        return 1 if a <= b else b
+
+    @staticmethod
+    def __conjunction(a: int, b: int) -> int:
+        return max(a, b)
+
     @abstractmethod
     def valuation1(self, model: Model, world: int):
         pass
@@ -226,27 +234,55 @@ class Coimplication(Expression):
         return 1 if a <= b else b
 
 
-class BoxModality(Expression):
-    def __init__(self, operand):
+class Box(Expression):
+    def __init__(self, operand: Expression):
         self.operand = operand
 
     def __repr__(self) -> str:
-        return f"BoxModality({self.operand.__repr__()})"
+        return f"Box({self.operand.__repr__()})"
 
-    def valuation1(self, model: Model, world: int):
-        pass
+    def valuation1(self, model: Model, world: int) -> int:
+        world_size = model.world_size
+        return min(
+            Box.__implication(
+                model.relation[world][world_], self.operand.valuation1(model, world_)
+            )
+            for world_ in range(len(world_size))
+        )
 
+    def valuation2(self, model: Model, world: int) -> int:
+        world_size = model.world_size
+        return max(
+            Box.__conjunction(
+                model.relation[world][world_], self.operand.valuation2(model, world_)
+            )
+            for world_ in range(len(world_size))
+        )
 
-class DiamondModality(Expression):
-    def __init__(self, operand):
+class Diamond(Expression):
+    def __init__(self, operand: Expression):
         self.operand = operand
 
     def __repr__(self) -> str:
-        return f"DiamondModality({self.operand.__repr__()})"
+        return f"Diamond({self.operand.__repr__()})"
 
-    def evaluate(self, frame):
-        # Implement diamond modality evaluation
-        pass
+    def valuation1(self, model: Model, world: int) -> int:
+        world_size = model.world_size
+        return max(
+            Diamond.__conjunction(
+                model.relation[world][world_], self.operand.valuation1(model, world_)
+            )
+            for world_ in range(len(world_size))
+        )
+    
+    def valuation2(self, model: Model, world: int) -> int:
+        world_size = model.world_size
+        return min(
+            Diamond.__implication(
+                model.relation[world][world_], self.operand.valuation2(model, world_)
+            )
+            for world_ in range(len(world_size))
+        )
 
 
 def main():
