@@ -1,9 +1,10 @@
 from abc import abstractmethod
+from numbers import Real
 
 
 class Model:
-    def __check_relation_value(relation_value: float) -> None:
-        if not isinstance(relation_value, float):
+    def __check_relation_value(relation_value: Real) -> None:
+        if not isinstance(relation_value, Real):
             raise Exception("Relation error: Relation values must be a real number.")
         if relation_value < 0 or relation_value > 1:
             raise Exception(
@@ -11,7 +12,7 @@ class Model:
             )
 
     @staticmethod
-    def __check_relation(relation: list, world_size: float) -> None:
+    def __check_relation(relation: list, world_size: Real) -> None:
         if not isinstance(relation, list):
             raise Exception("Relation error: Relation is not a list.")
         if len(relation) != world_size:
@@ -29,8 +30,8 @@ class Model:
                 Model.__check_relation_value(relation_value)
 
     @staticmethod
-    def __check_world_variable_valuation(world_value: float, type: float) -> None:
-        if not isinstance(world_value, float):
+    def __check_world_variable_valuation(world_value: Real, type: Real) -> None:
+        if not isinstance(world_value, Real):
             raise Exception(
                 f"Valuation error: Valuation{type} value for a world must be a real number."
             )
@@ -40,14 +41,14 @@ class Model:
             )
 
     @staticmethod
-    def __check_variable_valuation(value: list, type: float) -> None:
+    def __check_variable_valuation(value: list, type: Real) -> None:
         if not isinstance(value, list):
             raise Exception(f"Valuation error: Valuation {type} value must be a list.")
         for world_value in value:
             Model.__check_world_variable_valuation(world_value, type)
 
     @staticmethod
-    def __check_valuation(valuation: dict, type: float) -> None:
+    def __check_valuation(valuation: dict, type: Real) -> None:
         if not isinstance(valuation, dict):
             raise Exception(f"Valuation error: Valuation {type} must be a dictionary.")
         for value in valuation.values():
@@ -55,7 +56,7 @@ class Model:
 
     def __init__(
         self,
-        worlds_size: float,
+        worlds_size: Real,
         relation: list = None,
         valuation1: dict = None,
         valuation2: dict = None,
@@ -84,7 +85,7 @@ class Model:
             Model.__check_valuation(valuation1, 1)
             self.valuation2 = valuation2
 
-    def set_relation(self, world1: float, world2: float, value: float) -> None:
+    def set_relation(self, world1: Real, world2: Real, value: Real) -> None:
         Model.__check_relation_value(value)
         self.relation[world1][world2] = value
 
@@ -97,11 +98,11 @@ class Model:
         self.valuation2[variable] = value
 
     @staticmethod
-    def __check_world(world: float) -> None:
-        if not isinstance(world, float):
+    def __check_world(world: Real) -> None:
+        if not isinstance(world, Real):
             raise Exception("World error: World must be an real number.")
 
-    def set_variable_valuation1_for_world(self, variable, world: float, value: float):
+    def set_variable_valuation1_for_world(self, variable, world: Real, value: Real):
         Model.__check_world(world)
         Model.__check_world_variable_valuation(value, 1)
         self.valuation1[variable][world] = value
@@ -114,19 +115,19 @@ class Model:
 
 class Expression:
     @staticmethod
-    def __implication(a: float, b: float) -> float:
+    def __implication(a: Real, b: Real) -> Real:
         return 1 if a <= b else b
 
     @staticmethod
-    def __conjunction(a: float, b: float) -> float:
+    def __conjunction(a: Real, b: Real) -> Real:
         return max(a, b)
 
     @abstractmethod
-    def valuation1(self, model: Model, world: float) -> float:
+    def valuation1(self, model: Model, world: Real) -> Real:
         pass
 
     @abstractmethod
-    def valuation2(self, model: Model, world: float) -> float:
+    def valuation2(self, model: Model, world: Real) -> Real:
         pass
 
 
@@ -137,10 +138,10 @@ class Variable(Expression):
     def __repr__(self) -> str:
         return f"Variable({self.variable})"
 
-    def valuation1(self, model: Model, world: float) -> float:
+    def valuation1(self, model: Model, world: Real) -> Real:
         return model.valuation1[self.variable][world]
 
-    def valuation2(self, model: Model, world: float) -> float:
+    def valuation2(self, model: Model, world: Real) -> Real:
         return model.valuation2[self.variable][world]
 
 
@@ -151,10 +152,10 @@ class Negation(Expression):
     def __repr__(self) -> str:
         return f"Negation({self.operand.__repr__()})"
 
-    def valuation1(self, model: Model, world: float) -> float:
+    def valuation1(self, model: Model, world: Real) -> Real:
         return self.operand.valuation2(model, world)
 
-    def valuation2(self, model: Model, world: float) -> float:
+    def valuation2(self, model: Model, world: Real) -> Real:
         return self.operand.valuation1(model, world)
 
 
@@ -166,12 +167,12 @@ class Conjunction(Expression):
     def __repr__(self) -> str:
         return f"Conjunction({self.left.__repr__()}, {self.right.__repr__()})"
 
-    def valuation1(self, model: Model, world: float) -> float:
+    def valuation1(self, model: Model, world: Real) -> Real:
         a = self.left.valuation1(model, world)
         b = self.right.valuation1(model, world)
         return max(a, b)
 
-    def valuation2(self, model: Model, world: float) -> float:
+    def valuation2(self, model: Model, world: Real) -> Real:
         a = self.left.valuation2(model, world)
         b = self.right.valuation2(model, world)
         return min(a, b)
@@ -185,12 +186,12 @@ class Disjunction(Expression):
     def __repr__(self) -> str:
         return f"Disjunction({self.left.__repr__()}, {self.right.__repr__()})"
 
-    def valuation1(self, model: Model, world: float) -> float:
+    def valuation1(self, model: Model, world: Real) -> Real:
         a = self.left.valuation1(model, world)
         b = self.right.valuation1(model, world)
         return min(a, b)
 
-    def valuation2(self, model: Model, world: float) -> float:
+    def valuation2(self, model: Model, world: Real) -> Real:
         a = self.left.valuation2(model, world)
         b = self.right.valuation2(model, world)
         return max(a, b)
@@ -204,12 +205,12 @@ class Implication(Expression):
     def __repr__(self) -> str:
         return f"Implication({self.left.__repr__()}, {self.right.__repr__()})"
 
-    def valuation1(self, model: Model, world: float):
+    def valuation1(self, model: Model, world: Real):
         a = self.left.valuation1(model, world)
         b = self.right.valuation1(model, world)
         return 1 if a <= b else b
 
-    def valuation2(self, model: Model, world: float):
+    def valuation2(self, model: Model, world: Real):
         a = self.left.valuation2(model, world)
         b = self.right.valuation2(model, world)
         return 0 if b <= a else b
@@ -223,12 +224,12 @@ class Coimplication(Expression):
     def __repr__(self) -> str:
         return f"Coimplication({self.left.__repr__()}, {self.right.__repr__()})"
 
-    def valuation1(self, model: Model, world: float):
+    def valuation1(self, model: Model, world: Real):
         b = self.left.valuation1(model, world)
         a = self.right.valuation1(model, world)
         return 0 if b <= a else b
 
-    def valuation2(self, model: Model, world: float):
+    def valuation2(self, model: Model, world: Real):
         b = self.left.valuation2(model, world)
         a = self.right.valuation2(model, world)
         return 1 if a <= b else b
@@ -241,7 +242,7 @@ class Box(Expression):
     def __repr__(self) -> str:
         return f"Box({self.operand.__repr__()})"
 
-    def valuation1(self, model: Model, world: float) -> float:
+    def valuation1(self, model: Model, world: Real) -> Real:
         world_size = model.world_size
         return min(
             Box.__implication(
@@ -250,7 +251,7 @@ class Box(Expression):
             for world_ in range(len(world_size))
         )
 
-    def valuation2(self, model: Model, world: float) -> float:
+    def valuation2(self, model: Model, world: Real) -> Real:
         world_size = model.world_size
         return max(
             Box.__conjunction(
@@ -267,7 +268,7 @@ class Diamond(Expression):
     def __repr__(self) -> str:
         return f"Diamond({self.operand.__repr__()})"
 
-    def valuation1(self, model: Model, world: float) -> float:
+    def valuation1(self, model: Model, world: Real) -> Real:
         world_size = model.world_size
         return max(
             Diamond.__conjunction(
@@ -276,7 +277,7 @@ class Diamond(Expression):
             for world_ in range(len(world_size))
         )
 
-    def valuation2(self, model: Model, world: float) -> float:
+    def valuation2(self, model: Model, world: Real) -> Real:
         world_size = model.world_size
         return min(
             Diamond.__implication(
