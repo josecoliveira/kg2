@@ -237,6 +237,14 @@ class Coimplication(Expression):
 
 
 class Box(Expression):
+    @staticmethod
+    def __implication(a: float, b: float) -> float:
+        return 1 if a <= b else b
+
+    @staticmethod
+    def __conjunction(a: float, b: float) -> float:
+        return max(a, b)
+    
     def __init__(self, operand: Expression):
         self.operand = operand
 
@@ -244,25 +252,33 @@ class Box(Expression):
         return f"Box({self.operand.__repr__()})"
 
     def valuation1(self, model: Model, world: int) -> float:
-        world_size = model.world_size
+        world_size = model.worlds_size
         return min(
             Box.__implication(
                 model.relation[world][world_], self.operand.valuation1(model, world_)
             )
-            for world_ in range(len(world_size))
+            for world_ in range(world_size)
         )
 
     def valuation2(self, model: Model, world: int) -> float:
-        world_size = model.world_size
+        world_size = model.worlds_size
         return max(
             Box.__conjunction(
                 model.relation[world][world_], self.operand.valuation2(model, world_)
             )
-            for world_ in range(len(world_size))
+            for world_ in range(world_size)
         )
 
 
 class Diamond(Expression):
+    @staticmethod
+    def __implication(a: float, b: float) -> float:
+        return 1 if a <= b else b
+
+    @staticmethod
+    def __conjunction(a: float, b: float) -> float:
+        return max(a, b)
+
     def __init__(self, operand: Expression):
         self.operand = operand
 
@@ -270,21 +286,21 @@ class Diamond(Expression):
         return f"Diamond({self.operand.__repr__()})"
 
     def valuation1(self, model: Model, world: int) -> float:
-        world_size = model.world_size
+        world_size = model.worlds_size
         return max(
             Diamond.__conjunction(
                 model.relation[world][world_], self.operand.valuation1(model, world_)
             )
-            for world_ in range(len(world_size))
+            for world_ in range(world_size)
         )
 
     def valuation2(self, model: Model, world: int) -> float:
-        world_size = model.world_size
+        world_size = model.worlds_size
         return min(
             Diamond.__implication(
                 model.relation[world][world_], self.operand.valuation2(model, world_)
             )
-            for world_ in range(len(world_size))
+            for world_ in range(world_size)
         )
 
 
