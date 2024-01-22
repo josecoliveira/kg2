@@ -243,7 +243,7 @@ class Box(Expression):
 
     @staticmethod
     def __conjunction(a: float, b: float) -> float:
-        return max(a, b)
+        return min(a, b)
     
     def __init__(self, operand: Expression):
         self.operand = operand
@@ -277,7 +277,7 @@ class Diamond(Expression):
 
     @staticmethod
     def __conjunction(a: float, b: float) -> float:
-        return max(a, b)
+        return min(a, b)
 
     def __init__(self, operand: Expression):
         self.operand = operand
