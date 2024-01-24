@@ -74,12 +74,12 @@ class AKV:
             ]
         )
         self.belief_array = new_belief_array
-        self.states = np.vstack((self.states, self.belief_array))
+        self.states = np.vstack((self.states, [self.belief_array]))
         return self.belief_array
 
     def get_polarization(self, k=201, K=1000, alpha=1.0):
         pis = np.array(
-            [np.histogram(self.belief_array[:, i], bins=k) for i in range(self.k)]
+            [np.histogram(self.belief_array[:, i], bins=k, range=(0, 1)) for i in range(self.k)]
         )
 
         def polarization(pi):
