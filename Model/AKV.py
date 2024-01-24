@@ -9,7 +9,7 @@ epsilon = 0.01
 
 class AKV:
     def check_sizes(self):
-        if self.belief_array.shape[0] != self.influence_graph.shape[0]:
+        if self.belief_array.shape[1] != self.influence_graph.shape[0]:
             raise Exception(
                 "Number of agents in belief_state and in the influence graph are different."
             )
@@ -18,7 +18,7 @@ class AKV:
             raise Exception("Influcence graph must be a square matrix")
 
     def check_values(self):
-        if np.any(np.sum(self.belief_array, axis=1) != 1):
+        if np.any(np.sum(self.belief_array, axis=0) != 1):
             raise Exception("All belief states must sum up to 1.")
 
         if np.any(self.influence_graph < 0) or np.any(self.influence_graph > 1):
