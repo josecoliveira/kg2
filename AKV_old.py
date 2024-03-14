@@ -27,7 +27,7 @@ class AKV:
         if np.any(self.belief_array < 0) or np.any(self.belief_array > 1):
             raise Exception("Influence must be between 0 or 1")
 
-    def __init__(self, belief_array, influence_graph):
+    def __init__(self, belief_array, influence_graph, update_function, polarization_measure):
         self.belief_array = np.array(belief_array)
         self.influence_graph = np.array(influence_graph)
 
