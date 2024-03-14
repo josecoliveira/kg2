@@ -3,8 +3,8 @@ from abc import abstractmethod
 
 class Model:
     def __check_relation_value(relation_value: float) -> None:
-        if not isinstance(relation_value, (int, float)):
-            raise Exception("Relation error: Relation values must be a real number.")
+        # if not isinstance(relation_value, (int, float)):
+        #     raise Exception("Relation error: Relation values must be a real number.")
         if relation_value < 0 or relation_value > 1:
             raise Exception(
                 "Relation error: Relation values must be greater or equal than 0 and less or equal than 1."
@@ -32,10 +32,10 @@ class Model:
 
     @staticmethod
     def __check_world_variable_valuation(world_value: float, type: int) -> None:
-        if not isinstance(world_value, (int, float)):
-            raise Exception(
-                f"Valuation error: Valuation{type} value for a world must be a real number."
-            )
+        # if not isinstance(world_value, (int, float)):
+        #     raise Exception(
+        #         f"Valuation error: Valuation{type} value for a world must be a real number."
+        #     )
         if world_value < 0 or world_value > 1:
             raise Exception(
                 f"Valuation error: Valuation {type} must be greater or equal than 0 and less or equal than 1."
