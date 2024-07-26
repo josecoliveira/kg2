@@ -41,6 +41,8 @@ formula = Diamond(Diamond(Variable("p")))
 formula.valuation1(model, 0)
 ```
 
+Full example can be found in the Jupyter Notebook `example.ipynb`.
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
