@@ -1,5 +1,7 @@
 # kg2: A Python Tool for Paraconsistent Gödel Modal Logic
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12855590.svg)](https://doi.org/10.5281/zenodo.12855589)
+
 This package implements model and evaluation for Paraconsistent Gödel Modal Logic.  In this logic, the belief of an agent in a proposition is defined to be a pair of values in the interval $[0, 1]\times[0,1]$, representing the world's truth-value for and against the proposition.Paraconsistent Gödel Modal Logic is valuable for representing nuanced information about evidence, strength of belief, consistency and inconsistency, and certainty and uncertainty.
 
 ## Installation

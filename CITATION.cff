@@ -20,10 +20,10 @@ authors:
     orcid: 'https://orcid.org/0000-0001-6203-1505'
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.10695209
+    value: 10.5281/zenodo.12855589
   - type: url
-    value: 'https://github.com/josecoliveira/pgml'
-repository-code: 'https://github.com/josecoliveira/pgml'
+    value: 'https://github.com/josecoliveira/kg2'
+repository-code: 'https://github.com/josecoliveira/kg2'
 keywords:
   - paraconsistent logic
   - modal logic
