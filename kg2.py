@@ -163,7 +163,9 @@ class Model:
         Model.__check_world_variable_valuation(value, 1)
         self.valuation1[variable][world] = value
 
-    def set_variable_valuation1_for_world(self, variable, world, value):
+    def set_variable_valuation2_for_world(
+        self, variable: str, world: int, value: float
+    ):
         """Set valuation 2 for a specific existing variable for a single world.
 
         Args:
@@ -172,7 +174,7 @@ class Model:
             value (float): Valuation.
         """
         Model.__check_world_variable_valuation(value, 2)
-        self.valuation1[variable][world] = value
+        self.valuation2[variable][world] = value
 
 
 class Formula:
@@ -287,7 +289,7 @@ class Disjunction(Formula):
         right (Formula): Formula on the right side of the disjuntion.
     """
 
-    def __init__(self, left, right):
+    def __init__(self, left: Formula, right: Formula):
         self.left = left
         self.right = right
 
@@ -313,7 +315,7 @@ class Implication(Formula):
         right (Formula): Formula on the right side of the implication.
     """
 
-    def __init__(self, left, right):
+    def __init__(self, left: Formula, right: Formula):
         self.left = left
         self.right = right
 
