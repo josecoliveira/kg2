@@ -48,6 +48,6 @@ to discuss what you would like to change.
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
-# References
+## References
 
 Bílková, M., Frittella, S., Kozhemiachenko, D. (2022). Paraconsistent Gödel Modal Logic. In: Blanchette, J., Kovács, L., Pattinson, D. (eds) Automated Reasoning. IJCAR 2022. Lecture Notes in Computer Science(), vol 13385. Springer, Cham. [https://doi.org/10.1007/978-3-031-10769-6_26]

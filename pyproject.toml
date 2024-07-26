@@ -1,5 +1,5 @@
 [project]
-name = "pgml"
+name = "kg2"
 version = "1.0.0"
 authors = [
     { name = "José C. Oliveira", email = "josecarlosdeoliveirajr@gmail.com" },
